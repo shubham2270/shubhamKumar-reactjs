@@ -14,7 +14,7 @@ export const listProducts = async () => {
 };
 
 export const getProduct = async (id) => {
-  const getProductUrl = `https://upayments-studycase-api.herokuapp.com/api/products/{id}`;
+  const getProductUrl = `https://upayments-studycase-api.herokuapp.com/api/products/${id}`;
   const headers = {
     Authorization: "Bearer " + process.env.NEXT_PUBLIC_API_TOKEN,
     "Content-Type": "application/json",

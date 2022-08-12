@@ -14,10 +14,45 @@ export default function Home() {
   const { inputValue, handleInput, clearInput } = useInput();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState("");
+  const [filteredProductList, setFilteredProductList] = useState([]);
   const { data, isLoading, isError } = useGlobalFetch(
     `/products`,
     listProducts
   );
+
+  // Filter products by tags & search query
+  useEffect(() => {
+    const filterProductByQuery = (productList) => {
+      return productList.filter((product) =>
+        product.name.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    };
+
+    if (data) {
+      const products = data?.products;
+      // Filter product if category is selected else show all products
+      if (selectedTag.length > 0) {
+        const filteredByTag = products.filter((product) => {
+          return product.category === selectedTag;
+        });
+        // Filter products by search query for selected category
+        if (inputValue.length > 0) {
+          const filteredBySearch = filterProductByQuery(filteredByTag);
+          setFilteredProductList(filteredBySearch);
+        } else {
+          setFilteredProductList(filteredByTag);
+        }
+      } else {
+        // Filter by search query
+        if (inputValue.length > 0) {
+          const filteredBySearch = filterProductByQuery(products);
+          setFilteredProductList(filteredBySearch);
+        } else {
+          setFilteredProductList(products);
+        }
+      }
+    }
+  }, [data, selectedTag, inputValue]);
 
   return (
     <div className={styles.container}>
@@ -57,7 +92,7 @@ export default function Home() {
         ) : null}
         {!isLoading && (
           <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4 md:grid-cols-3 mt-28 max-w-10xl lg:ml-20 lg:mr-20'>
-            {data?.products?.map((product) => {
+            {filteredProductList?.map((product) => {
               const { avatar, name, price, _id } = product;
               return (
                 <ProductCard

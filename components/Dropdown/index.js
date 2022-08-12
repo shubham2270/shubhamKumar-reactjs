@@ -60,6 +60,12 @@ const Dropdown = ({
           role='menu'
         >
           <div className='py-1 w-full' role='none'>
+            <span
+              className='text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-slate-50'
+              onClick={() => handleDropdownTagSelect("All")}
+            >
+              All
+            </span>
             {catagoriesList?.categories?.map((category) => {
               const { name, _id } = category;
               return (
