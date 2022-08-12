@@ -1,5 +1,8 @@
 import React from "react";
 
+import useGlobalFetch from "../../hooks/useGlobalFetch";
+import { listCategories } from "../../api";
+
 const Dropdown = ({
   dropdownOpen,
   setDropdownOpen,
@@ -7,7 +10,10 @@ const Dropdown = ({
   setSelectedTag,
   fullWidth,
 }) => {
-  const tagList = ["All", "tag1", "tag2"];
+  const { data: catagoriesList } = useGlobalFetch(
+    `/categories`,
+    listCategories
+  );
 
   const handleDropdownTagSelect = (selected) => {
     if (selected === "All") {
@@ -50,18 +56,19 @@ const Dropdown = ({
 
       {dropdownOpen ? (
         <div
-          className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+          className='origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none w-full'
           role='menu'
         >
-          <div className='py-1' role='none'>
-            {tagList.map((item) => {
+          <div className='py-1 w-full' role='none'>
+            {catagoriesList?.categories?.map((category) => {
+              const { name, _id } = category;
               return (
                 <span
-                  key={item}
+                  key={_id}
                   className='text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-slate-50'
-                  onClick={() => handleDropdownTagSelect(item)}
+                  onClick={() => handleDropdownTagSelect(name)}
                 >
-                  {item}
+                  {name}
                 </span>
               );
             })}

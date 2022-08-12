@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
-import { listProducts } from "../api";
+import { listProducts, listCategories } from "../api";
 import useGlobalFetch from "../hooks/useGlobalFetch";
 import useInput from "../hooks/useInput";
 import Dropdown from "../components/Dropdown";
@@ -14,14 +14,10 @@ export default function Home() {
   const { inputValue, handleInput, clearInput } = useInput();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState("");
-  // const { data, isLoading, isError } = useGlobalFetch(
-  //   `/products`,
-  //   listProducts
-  // );
-
-  // console.log(data, "---<<<------");
-
-  console.log(inputValue);
+  const { data, isLoading, isError } = useGlobalFetch(
+    `/products`,
+    listProducts
+  );
 
   return (
     <div className={styles.container}>
@@ -34,7 +30,7 @@ export default function Home() {
       <main className='m-8 lg:m-16'>
         <Link href='/add-product'>
           <a>
-            <button className=' hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-full absolute bottom-20 right-20 bg-slate-600'>
+            <button className=' hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-full fixed bottom-20 right-20 bg-slate-600 shadow-2xl'>
               Add Product
             </button>
           </a>
@@ -54,15 +50,27 @@ export default function Home() {
             setSelectedTag={setSelectedTag}
           />
         </div>
-        <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4 md:grid-cols-3 mt-28 max-w-10xl lg:ml-20 lg:mr-20'>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </div>
+        {isLoading ? (
+          <div className='text-3xl text-center grid place-content-center'>
+            Loading...
+          </div>
+        ) : null}
+        {!isLoading && (
+          <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4 md:grid-cols-3 mt-28 max-w-10xl lg:ml-20 lg:mr-20'>
+            {data?.products?.map((product) => {
+              const { avatar, name, price, _id } = product;
+              return (
+                <ProductCard
+                  key={_id}
+                  avatar={avatar}
+                  name={name}
+                  price={price}
+                  id={_id}
+                />
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );

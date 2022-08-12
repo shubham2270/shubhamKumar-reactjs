@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useSWRConfig } from "swr";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { listProducts } from "../api";
+import { listProducts, addProduct } from "../api";
 import useGlobalFetch from "../hooks/useGlobalFetch";
 import Dropdown from "../components/Dropdown";
 
 export default function AddProduct() {
+  const router = useRouter();
+  const { mutate } = useSWRConfig();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState("");
 
@@ -16,12 +20,17 @@ export default function AddProduct() {
 
   const onSubmit = async (formData) => {
     if (formData) {
-      const productData = { ...formData, category: selectedTag };
-      console.log(productData, "====");
+      const productData = {
+        ...formData,
+        category: selectedTag,
+        developerEmail: "shubham2270@gmail.com",
+      };
+      const response = await addProduct(productData);
+      router.push("/");
+      mutate("/products");
       reset();
       setSelectedTag("");
       try {
-        //    await resendVerificationEmail(formData.username);
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +61,7 @@ export default function AddProduct() {
                   className='inputStyling'
                   type='text'
                   placeholder='Product Name'
-                  {...register("productName")}
+                  {...register("name")}
                 ></input>
               </div>
               <div className='mb-4'>
@@ -75,7 +84,7 @@ export default function AddProduct() {
                   className='inputStyling'
                   type='text'
                   placeholder='Image url'
-                  {...register("imageUrl")}
+                  {...register("avatar")}
                 ></input>
               </div>
               <div className='mb-4'>
