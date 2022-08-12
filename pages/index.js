@@ -7,6 +7,7 @@ import { listProducts } from "../api";
 import useGlobalFetch from "../hooks/useGlobalFetch";
 import useInput from "../hooks/useInput";
 import Dropdown from "../components/Dropdown";
+import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const { inputValue, handleInput, clearInput } = useInput();
@@ -47,6 +48,15 @@ export default function Home() {
             selectedTag={selectedTag}
             setSelectedTag={setSelectedTag}
           />
+        </div>
+        <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4 md:grid-cols-3 mt-28 max-w-10xl lg:ml-20 lg:mr-20'>
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
         </div>
       </main>
     </div>
