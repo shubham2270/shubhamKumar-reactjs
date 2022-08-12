@@ -5,6 +5,7 @@ const Dropdown = ({
   setDropdownOpen,
   selectedTag,
   setSelectedTag,
+  fullWidth,
 }) => {
   const tagList = ["All", "tag1", "tag2"];
 
@@ -19,11 +20,13 @@ const Dropdown = ({
   };
 
   return (
-    <div className='relative inline-block text-left'>
-      <div>
+    <div
+      className={`relative inline-block text-left ${fullWidth ? "w-full" : ""}`}
+    >
+      <div className='w-full'>
         <button
           type='button'
-          className='inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500'
+          className='inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500'
           id='menu-button'
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >

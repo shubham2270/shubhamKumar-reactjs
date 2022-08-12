@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 import { listProducts } from "../api";
@@ -31,9 +32,13 @@ export default function Home() {
       </Head>
 
       <main className='m-8 lg:m-16'>
-        <div className='p-8 bg-white shadow-lg rounded-md text-2xl text-center'>
-          UPayments Store
-        </div>
+        <Link href='/add-product'>
+          <a>
+            <button className=' hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-full absolute bottom-20 right-20 bg-slate-600'>
+              Add Product
+            </button>
+          </a>
+        </Link>
         <div className='flex justify-between mt-10'>
           <input
             className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-36 md:w-72 lg:w-72'
